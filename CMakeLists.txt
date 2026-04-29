@@ -26,7 +26,7 @@ endif()
 juce_add_plugin(${PROJECT_NAME}
     COMPANY_NAME "${COMPANY_NAME}"
     BUNDLE_ID "${BUNDLE_ID}"
-    COPY_PLUGIN_AFTER_BUILD TRUE
+    COPY_PLUGIN_AFTER_BUILD FALSE
     PLUGIN_MANUFACTURER_CODE ADSP
     PLUGIN_CODE SmGP
     FORMATS ${FORMATS}
@@ -68,6 +68,33 @@ endif()
 target_include_directories(${PROJECT_NAME} PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/Source"
 )
+
+if(TARGET juce_vst3_helper)
+    target_include_directories(juce_vst3_helper PRIVATE
+        ${CMAKE_SOURCE_DIR}/modules/JUCE/modules/juce_audio_processors/format_types/VST3_SDK
+        ${CMAKE_SOURCE_DIR}/modules/JUCE/modules/juce_audio_processors_headless/format_types/VST3_SDK
+    )
+    target_compile_definitions(juce_vst3_helper PRIVATE
+        JucePlugin_Name="${PRODUCT_NAME}"
+        JucePlugin_Desc="${PRODUCT_NAME}"
+        JucePlugin_Manufacturer="${COMPANY_NAME}"
+        JucePlugin_ManufacturerWebsite=""
+        JucePlugin_ManufacturerEmail=""
+        JucePlugin_ManufacturerCode=0x41445350
+        JucePlugin_PluginCode=0x536d4750
+        JucePlugin_VSTUniqueID=0x536d4750
+        JucePlugin_VersionString="${CURRENT_VERSION}"
+        JucePlugin_VersionCode=0x1
+        JucePlugin_VSTCategory=kPlugCategEffect
+        "JucePlugin_Vst3Category=\"Fx\""
+    )
+endif()
+
+if(TARGET SimpleGainPlugin_VST3)
+    target_include_directories(SimpleGainPlugin_VST3 PRIVATE
+        ${CMAKE_SOURCE_DIR}/modules/JUCE/modules/juce_audio_processors_headless/format_types/VST3_SDK
+    )
+endif()
 
 # Compile definitions
 target_compile_definitions(${PROJECT_NAME} PRIVATE
