@@ -30,7 +30,7 @@ public:
     bool producesMidi() const override;
     bool isMidiEffect() const override;
     double getTailLengthSeconds() const override;
-
+    float threshold;
     //==============================================================================
     int getNumPrograms() override;
     int getCurrentProgram() override;
@@ -41,6 +41,7 @@ public:
     //==============================================================================
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
+    
 
 private:
     //==============================================================================
