@@ -15,7 +15,19 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
 
     addAndMakeVisible (&ThresholdSlider);
     ThresholdSlider.addListener(this);
+
+    RatioSlider.setSliderStyle (juce::Slider::LinearBarVertical);   
+    RatioSlider.setRange (1, 5, 0.1);
+    RatioSlider.setTextBoxStyle (juce::Slider::NoTextBox, false, 90, 0);
+    RatioSlider.setPopupDisplayEnabled (true, false, this);
+    RatioSlider.setTextValueSuffix (" Ratio");
+    RatioSlider.setValue (2.0);
+
+    addAndMakeVisible (&RatioSlider);
+    RatioSlider.addListener(this);
+   
     setSize(200,300);
+
    
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
@@ -35,6 +47,7 @@ void AudioPluginAudioProcessorEditor::paint (juce::Graphics& g)
     g.setColour (juce::Colours::white);
     g.setFont (15.0f);
     g.drawFittedText ("Threshold", getLocalBounds(), juce::Justification::centred, 1);
+    g.drawFittedText ("Ratio", getLocalBounds(), juce::Justification::centred, 1);
 }
 
 void AudioPluginAudioProcessorEditor::resized()
@@ -42,9 +55,18 @@ void AudioPluginAudioProcessorEditor::resized()
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
      ThresholdSlider.setBounds (40, 30, 20, getHeight() - 60);
+         RatioSlider.setBounds (80, 30, 20, getHeight() - 60);   
 }
 
 void AudioPluginAudioProcessorEditor::sliderValueChanged (juce::Slider* slider)
 {
-    processorRef.threshold = ThresholdSlider.getValue();
+    if (slider == &ThresholdSlider)
+    {
+        processorRef.threshold = ThresholdSlider.getValue();
+    }
+    else if (slider == &RatioSlider)
+    {
+        processorRef.ratio = RatioSlider.getValue();
+    }
+
 }

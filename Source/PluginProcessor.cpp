@@ -13,6 +13,7 @@ AudioPluginAudioProcessor::AudioPluginAudioProcessor()
                        )
 {
     threshold = 25;
+    ratio = 2.0f;
    
 }
 
@@ -132,8 +133,7 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
-    float level_dB, gainDB, excess, gain, ratio;
-    ratio = 2;
+    float level_dB, gainDB, excess, gain;
 
     // In case we have more outputs than inputs, this code clears any output
     // channels that didn't contain input data, (because these aren't

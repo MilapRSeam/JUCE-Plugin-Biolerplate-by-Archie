@@ -30,7 +30,7 @@ public:
     bool producesMidi() const override;
     bool isMidiEffect() const override;
     double getTailLengthSeconds() const override;
-    float threshold;
+    float threshold,ratio;
     //==============================================================================
     int getNumPrograms() override;
     int getCurrentProgram() override;
