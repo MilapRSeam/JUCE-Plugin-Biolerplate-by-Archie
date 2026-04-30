@@ -26,7 +26,7 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
     addAndMakeVisible (&RatioSlider);
     RatioSlider.addListener(this);
    
-    setSize(200,300);
+    setSize(400,300);
 
    
     // Make sure that before the constructor has finished, you've set the

@@ -12,7 +12,7 @@ AudioPluginAudioProcessor::AudioPluginAudioProcessor()
                      #endif
                        )
 {
-    threshold = 25;
+    threshold = -25.0f;
     ratio = 2.0f;
    
 }
@@ -133,7 +133,7 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
-    float level_dB, gainDB, excess, gain;
+   
 
     // In case we have more outputs than inputs, this code clears any output
     // channels that didn't contain input data, (because these aren't
@@ -153,7 +153,8 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
         auto* channelData = buffer.getWritePointer (channel);
-        auto x = 0;
+        float x = 0.0f;
+        float level_dB, gainDB, excess, gain;
         
         juce::ignoreUnused (channelData);
         for (int samp = 0; samp < buffer.getNumSamples(); ++samp)
@@ -164,11 +165,19 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
           if (level_dB > threshold)
           {
             excess = level_dB - threshold;
-            gainDB = - (excess - (excess/ratio));
+            gainDB = -(excess - (excess/ratio));
           }
 
         gain = juce::Decibels::decibelsToGain(gainDB);
         channelData[samp] = x*gain;
+
+        if ((channelData[samp]) >= 1.0f)
+        {
+            channelData[samp] = 1.0f;
+        }
+        else if ((channelData[samp]) <= -1.0f)
+        {
+           channelData[samp] = -1.0f;
         }
         // ..do something to the data...
     }
